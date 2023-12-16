@@ -2,8 +2,10 @@ import CourseGoal from "./components/CourseGoal";
 import Header from "./components/Header";
 import goalsImg from "./assets/goals.jpg";
 import { useState } from "react";
+import CourseGoalList from "./components/CourseGoalList";
+import NewGoal from "./components/NewGoal";
 
-type CourseGoal = {
+export type CourseGoal = {
   title: string;
   description: string;
   id: number;
@@ -11,25 +13,38 @@ type CourseGoal = {
 
 export default function App() {
   const [goals, setGoals] = useState<CourseGoal[]>([]);
-  function handleAddGoal(
-    setGoals((prevGoals)=>{
-      const newGoal : CourseGoal = {
+
+  function handleAddGoal(goal: string, summary: string) {
+    setGoals((preGoals) => {
+      const newGoal: CourseGoal = {
         id: Math.random(),
-        title: 'Learn React + TS',
-        description: 'Learn it in depth'
-      };o
-return [...preGoals, newGoal];
+        title: goal,
+        description: summary,
+      };
+      return [...preGoals, newGoal];
     });
-  ) {}
+  }
+
+  function handleDeleteGoal(id: number) {
+    setGoals((prevGoals) => prevGoals.filter((goal) => goal.id != id));
+  }
+
   return (
     <main>
       <Header image={{ src: goalsImg, alt: "A List of Goals" }}>
         <h1>Your Course goals</h1>
       </Header>
-      <button onClick={handleAddGoal}> Add Goal </button>
-      <CourseGoal title="Learn TS + React">
-        <p>Learn from the groud up</p>
-      </CourseGoal>
+      <NewGoal onAddGoal={handleAddGoal} />
+      {/* <ul>
+        {goals.map((goal) => (
+          <li key={goal.id}>
+            <CourseGoal title={goal.title}>
+              <p>{goal.description}</p>
+            </CourseGoal>
+          </li>
+        ))}
+      </ul> */}
+      <CourseGoalList goals={goals} onDeleteGoal={handleDeleteGoal} />
     </main>
   );
 }

@@ -5,7 +5,11 @@ import { FC, type PropsWithChildren, type ReactNode } from "react";
 //   children: ReactNode;
 // }
 
-type CourseGoalProps = PropsWithChildren<{ title: string }>;
+type CourseGoalProps = PropsWithChildren<{
+  id: number;
+  title: string;
+  onDeleteGoal: (id: number) => void;
+}>;
 
 // export default function CourseGoal({ title, children }: CourseGoalProps) {
 //   return (
@@ -19,14 +23,19 @@ type CourseGoalProps = PropsWithChildren<{ title: string }>;
 //   );
 // }
 
-const CourseGoal: FC<CourseGoalProps> = ({ title, children }) => {
+const CourseGoal: FC<CourseGoalProps> = ({
+  id,
+  title,
+  onDeleteGoal,
+  children,
+}) => {
   return (
     <article>
       <div>
         <h2>{title}</h2>
         {children}
       </div>
-      <button>Delete</button>
+      <button onClick={() => onDeleteGoal(id)}>Delete</button>
     </article>
   );
 };
